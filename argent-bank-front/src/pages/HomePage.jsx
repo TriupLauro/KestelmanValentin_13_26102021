@@ -1,8 +1,8 @@
 import HeroSection from "../components/HeroSection";
 import FeatureItem from "../components/FeatureItem";
-import chatIcon from "../../../designs/img/icon-chat.png";
-import moneyIcon from "../../../designs/img/icon-money.png";
-import securityIcon from "../../../designs/img/icon-security.png";
+import chatIcon from "../img/icon-chat.png";
+import moneyIcon from "../img/icon-money.png";
+import securityIcon from "../img/icon-security.png";
 import MainLayout from "../layouts/MainLayout";
 
 function HomePage() {
