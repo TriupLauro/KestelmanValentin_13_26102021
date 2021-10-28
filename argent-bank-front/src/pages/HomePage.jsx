@@ -4,8 +4,13 @@ import chatIcon from "../img/icon-chat.png";
 import moneyIcon from "../img/icon-money.png";
 import securityIcon from "../img/icon-security.png";
 import MainLayout from "../layouts/MainLayout";
+import {useEffect} from "react";
 
 function HomePage() {
+    useEffect(() => {
+        document.title = 'Argent Bank - Home Page'
+    }, [])
+
     return (
         <MainLayout>
             <main>

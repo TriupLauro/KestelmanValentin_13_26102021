@@ -1,11 +1,16 @@
 import UserAccount from "../components/UserAccount";
 import MainLayout from "../layouts/MainLayout";
 import {useSelector} from "react-redux";
+import {useEffect} from "react";
 
 //The UserAccount component uses placeholder data here
 
 function User() {
     const {firstName, lastName} = useSelector(state => state.login.userData)
+
+    useEffect(() => {
+        document.title = `Argent Bank - ${firstName} ${lastName} accounts`
+    }, [])
 
     return (
         <MainLayout>

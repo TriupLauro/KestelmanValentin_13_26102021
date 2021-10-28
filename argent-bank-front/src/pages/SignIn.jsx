@@ -1,7 +1,12 @@
 import MainLayout from "../layouts/MainLayout";
 import SignInForm from "../components/SignInForm";
+import {useEffect} from "react";
 
 function SignIn() {
+    useEffect(() => {
+        document.title = 'Argent Bank - Sign in'
+    },[])
+
     return (
         <MainLayout>
             <main className="main bg-dark">
