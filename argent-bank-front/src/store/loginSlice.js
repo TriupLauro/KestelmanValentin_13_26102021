@@ -5,13 +5,15 @@ export const loginSlice = createSlice({
     initialState : {
         status : 'disconnected',
         token : null,
-        error : null
+        error : null,
+        userData : null
     },
     reducers: {
         logout : state => {
             state.token = null
             state.status = 'disconnected'
             state.error = null
+            state.userData = null
         },
         connecting : (state) => {
             if (state.status === 'connecting') return
@@ -27,10 +29,14 @@ export const loginSlice = createSlice({
             state.token = action.payload
             state.status = 'connected'
             state.error = null
+        },
+        resolved : (state, action) => {
+            state.userData = action.payload
+            state.status = 'resolved'
         }
     }
 })
 
-export const { logout, connecting, rejected, connected } = loginSlice.actions
+export const { logout, connecting, rejected, connected, resolved } = loginSlice.actions
 
 export default loginSlice.reducer

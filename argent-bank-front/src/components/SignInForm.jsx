@@ -12,7 +12,6 @@ function SignInForm() {
 
     function handleSubmit(e) {
         e.preventDefault()
-        console.log('Formulaire soumis')
         dispatch(loginActions.connecting())
         axios.post('http://localhost:3001/api/v1/user/login', {
             email : userName,
