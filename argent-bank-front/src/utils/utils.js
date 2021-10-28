@@ -2,7 +2,7 @@
 export function formatAmount(amount) {
     let smallRest = amount % 1000
     let bigRest = (amount - smallRest)
-    const parts = [smallRest.toFixed(2)]
+    const parts = [smallRest.toFixed(2).toString()]
     while (bigRest > 0) {
         let part = bigRest / 1000
         smallRest = part % 1000
@@ -14,14 +14,12 @@ export function formatAmount(amount) {
         if (index === 0) {
             result += `${part}`
         }else{
-            result += `,${fillZero(part)}`
+            result += `,${fillZero(part,3)}`
         }
     })
     return result
 }
 
-function fillZero(subPart) {
-    if (subPart >= 100) return subPart
-    if (subPart >= 10) return '0' + subPart
-    return '00' + subPart
+function fillZero(subPart, places) {
+    return subPart.padStart(places, '0')
 }
