@@ -1,4 +1,12 @@
+import {Redirect} from "react-router-dom";
+import {useState} from "react";
+
 function UserAccount({title, amount}) {
+
+    const [redirect,setRedirect] = useState(null)
+
+    if (redirect) return <Redirect to={redirect}/>
+
     return (
         <section className="account">
             <div className="account-content-wrapper">
@@ -7,7 +15,10 @@ function UserAccount({title, amount}) {
                 <p className="account-amount-description">Available Balance</p>
             </div>
             <div className="account-content-wrapper cta">
-                <button className="transaction-button">View transactions</button>
+                <button
+                    className="transaction-button"
+                    onClick={() => setRedirect('/transactions')}
+                >View transactions</button>
             </div>
         </section>
     )

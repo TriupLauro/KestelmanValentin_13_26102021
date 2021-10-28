@@ -1,0 +1,74 @@
+.transaction-main-container {
+    background-color: white;
+    box-shadow: 0 0.125rem 0.25rem grey;
+    height: 8rem;
+    margin-top: 0.1rem;
+    padding-top: 1.75rem;
+    box-sizing: border-box;
+}
+
+.transaction-account-title {
+    font-weight: 600;
+}
+
+.transaction-account-balance {
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.transaction-account-subtitle {
+    font-size : 0.75rem;
+}
+
+.transaction-table-button {
+    font-weight: bold;
+    margin-left: 1rem;
+}
+
+.transaction-frame {
+    width: 90%;
+    margin: 5rem auto 0;
+    border-collapse: collapse;
+    font-weight: bold;
+}
+
+.transaction-frame-head {
+    color: white;
+}
+
+.transaction-frame-head-date, .transaction-frame-date {
+    text-align: start;
+}
+
+.transaction-frame-row {
+    background-color: white;
+    height: 3rem;
+    box-shadow: 0 0.125rem 0.25rem grey;
+    border: 0.125rem solid grey;
+}
+
+.transaction-frame-chevron-container {
+    width: 2rem;
+}
+
+.transaction-frame-dropdown-content {
+    background-color: white;
+    border: 0.125rem solid grey;
+    border-top: none;
+    border-left: none;
+    text-align: start;
+}
+
+.transaction-frame-space {
+    background-color: white;
+    border-bottom : 0.125rem solid grey;
+    border-left: 0.125rem solid grey;
+}
+
+.transaction-frame-row.dropdown-open {
+    border-bottom: none;
+}
+
+.transaction-frame-dropdown-line {
+    padding: 0.5rem 0;
+}
