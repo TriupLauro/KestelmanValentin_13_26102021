@@ -1,7 +1,18 @@
 import MainLayout from "../layouts/MainLayout";
 import "../styles/transaction.css"
+import TransactionFrameRow from "../components/TransactionFrameRow";
+import {useLoginCheck} from "../utils/utils";
+import {Redirect} from "react-router-dom";
+
+//The data used here is only a placeholder and will contain the same data no matter the account clicked
 
 function TransactionsDetails() {
+    const {loading, redirect} = useLoginCheck()
+
+    if (loading) return <div>Loading data</div>
+
+    if (redirect) return <Redirect to={redirect} />
+
     return (
         <MainLayout>
             <main className="bg-dark main">
@@ -22,36 +33,54 @@ function TransactionsDetails() {
                         </tr>
                     </thead>
                     <tbody className="transaction-frame-body">
-                        <tr className="transaction-frame-row">
-                            <td className="transaction-frame-chevron-container">
-                                <i className="fa fa-chevron-down" aria-hidden="true"> </i>
-                            </td>
-                            <td>
-                                <div className="transaction-frame-date">June 20th, 2020</div>
-                            </td>
-                            <td>Golden Sun Bakery</td>
-                            <td>$5.00</td>
-                            <td>$2,082.79</td>
-                        </tr>
-                        <tr className="transaction-frame-row dropdown-open">
-                            <td className="transaction-frame-chevron-container">
-                                <i className="fa fa-chevron-up" aria-hidden="true"> </i>
-                            </td>
-                            <td>
-                                <div className="transaction-frame-date">June 20th, 2020</div>
-                            </td>
-                            <td>Golden Sun Bakery</td>
-                            <td>$10.00</td>
-                            <td>$2,087.79</td>
-                        </tr>
-                        <tr >
-                            <td className="transaction-frame-space"> </td>
-                            <td className="transaction-frame-dropdown-content" colSpan={4}>
-                                <div className="transaction-frame-dropdown-line">Transaction Type: Electronic</div>
-                                <div className="transaction-frame-dropdown-line">Category: Food <i className="fa fa-pencil"> </i></div>
-                                <div className="transaction-frame-dropdown-line">Notes: <i className="fa fa-pencil"> </i></div>
-                            </td>
-                        </tr>
+                    <TransactionFrameRow
+                        notes=""
+                        category="Food"
+                        description="Golden Sun Bakery"
+                        date="June 20th, 2020"
+                        amount={5}
+                        balance={2082.79}
+                    />
+                    <TransactionFrameRow
+                        notes=""
+                        category="Food"
+                        description="Golden Sun Bakery"
+                        date="June 20th, 2020"
+                        amount={10.00}
+                        balance={2087.79}
+                    />
+                    <TransactionFrameRow
+                        notes=""
+                        category="Food"
+                        description="Golden Sun Bakery"
+                        date="June 20th, 2020"
+                        amount={20}
+                        balance={2097.79}
+                    />
+                    <TransactionFrameRow
+                        notes=""
+                        category="Food"
+                        description="Golden Sun Bakery"
+                        date="June 20th, 2020"
+                        amount={30}
+                        balance={2117.79}
+                    />
+                    <TransactionFrameRow
+                        notes=""
+                        category="Food"
+                        description="Golden Sun Bakery"
+                        date="June 20th, 2020"
+                        amount={40}
+                        balance={2147.79}
+                    />
+                    <TransactionFrameRow
+                        notes=""
+                        category="Food"
+                        description="Golden Sun Bakery"
+                        date="June 20th, 2020"
+                        amount={50}
+                        balance={2187.79}
+                    />
                     </tbody>
 
                 </table>

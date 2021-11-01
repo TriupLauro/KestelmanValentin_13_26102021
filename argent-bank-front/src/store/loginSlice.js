@@ -38,5 +38,3 @@ export const loginSlice = createSlice({
 })
 
 export const { logout, connecting, rejected, connected, resolved } = loginSlice.actions
-
-export default loginSlice.reducer
