@@ -33,8 +33,19 @@ export const loginSlice = createSlice({
         resolved : (state, action) => {
             state.userData = action.payload
             state.status = 'resolved'
+            state.error = null
+        },
+        renaming : (state, action) => {
+            state.userData.firstName = action.payload.firstName
+            state.userData.lastName = action.payload.lastName
+            state.status = 'renaming'
+            state.error = null
+        },
+        renamed : (state) => {
+            state.status = 'renamed'
+            state.error = null
         }
     }
 })
 
-export const { logout, connecting, rejected, connected, resolved } = loginSlice.actions
+export const { logout, connecting, rejected, connected, resolved, renaming, renamed } = loginSlice.actions
