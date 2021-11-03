@@ -2,12 +2,14 @@ import {useState} from "react";
 import axios from "axios";
 import {useDispatch} from "react-redux";
 import * as loginActions from "../store/loginSlice"
+import {Redirect} from "react-router-dom";
 
 function SignInForm() {
 
     const [userName, setUserName] = useState('')
     const [password, setPassword] = useState('')
     const [invalidLogins, setInvalidLogins] = useState(false)
+    const [redirect, setRedirect] = useState(null)
     const dispatch = useDispatch()
 
     function handleSubmit(e) {
@@ -18,8 +20,8 @@ function SignInForm() {
             password : password
         }).then(response => {
             setInvalidLogins(false)
-            console.log(response)
-            dispatch(loginActions.connected(response.data.body.token))
+            document.cookie = `token=${response.data.body.token}; max-age=60*60*24*7; samesite=lax`
+            setRedirect('/user')
         }).catch(error => {
             if (error.response.status === 400) setInvalidLogins(true)
             dispatch(loginActions.rejected(error.response.data))
@@ -34,6 +36,8 @@ function SignInForm() {
     function typePassword(e) {
         setPassword(e.target.value)
     }
+
+    if (redirect) return <Redirect to={redirect} />
 
     return (
         <form onSubmit={handleSubmit}>

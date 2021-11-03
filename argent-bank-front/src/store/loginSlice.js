@@ -4,13 +4,12 @@ export const loginSlice = createSlice({
     name : 'login',
     initialState : {
         status : 'disconnected',
-        token : null,
         error : null,
         userData : null
     },
     reducers: {
         logout : state => {
-            state.token = null
+            document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=lax`
             state.status = 'disconnected'
             state.error = null
             state.userData = null
@@ -22,11 +21,9 @@ export const loginSlice = createSlice({
         },
         rejected : (state,action) => {
             state.status = 'rejected'
-            state.token = null
             state.error = action.payload
         },
-        connected : (state, action) => {
-            state.token = action.payload
+        connected : (state) => {
             state.status = 'connected'
             state.error = null
         },

@@ -5,11 +5,15 @@ import moneyIcon from "../img/icon-money.png";
 import securityIcon from "../img/icon-security.png";
 import MainLayout from "../layouts/MainLayout";
 import {useEffect} from "react";
+import {useLoginCheck} from "../utils/utils";
 
 function HomePage() {
     useEffect(() => {
         document.title = 'Argent Bank - Home Page'
     }, [])
+
+    //Called for checking the cookies and connecting/updating the nav bar if that's the case
+    useLoginCheck()
 
     return (
         <MainLayout>
