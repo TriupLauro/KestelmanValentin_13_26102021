@@ -20,7 +20,7 @@ function SignInForm() {
             password : password
         }).then(response => {
             setInvalidLogins(false)
-            document.cookie = `token=${response.data.body.token}; max-age=60*60*24*7; samesite=lax`
+            document.cookie = `token=${response.data.body.token}; max-age=${60*60*24*7}; samesite=strict`
             setRedirect('/user')
         }).catch(error => {
             if (error.response.status === 400) setInvalidLogins(true)

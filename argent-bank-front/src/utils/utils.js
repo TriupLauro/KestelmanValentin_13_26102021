@@ -13,13 +13,12 @@ export function useLoginCheck() {
     const [loading, setLoading] = useState(true)
     const dispatch = useDispatch()
     const store = useStore()
-    const token = getTokenFromCookie()
+    const config = generateConfig()
 
     const status = useSelector(state => state.login.status)
 
     useEffect(() => {
         if (status === 'renaming') {
-            const config = generateConfig()
             axios.put('http://localhost:3001/api/v1/user/profile',{
                     firstName : store.getState().login.userData.firstName,
                     lastName : store.getState().login.userData.lastName
@@ -34,8 +33,11 @@ export function useLoginCheck() {
             })
         }
 
-        if (token) {
-            if (status === 'renamed' || status === 'renaming' || status === 'resolved') return
+        if (config) {
+            if (status === 'resolved' || status === 'renamed' || status === 'renaming') {
+                setLoading(false)
+                return {redirect, loading, userData}
+            }
             if (status !== 'connected') dispatch(connected())
         }else{
             setLoading(false)
@@ -43,7 +45,6 @@ export function useLoginCheck() {
         }
 
         if (status === 'connected') {
-            const config = generateConfig()
             axios.post('http://localhost:3001/api/v1/user/profile', {},config
             ).then(response => {
                 dispatch(loginActions.resolved(response.data.body))
@@ -63,16 +64,19 @@ export function useLoginCheck() {
 }
 
 export function getTokenFromCookie() {
-    try {
+    if (document.cookie.split(';').find(row => row.startsWith('token='))) {
         return document.cookie
             .split(';').find(row => row.startsWith('token=')).split('=')[1]
-    }catch{
-        console.log('Cannot read cookies')
+    }else{
+        console.log('Cannot read token cookie')
+        return null
     }
 }
 
 export function generateConfig() {
     const token = getTokenFromCookie()
+    if (!token) return null
+
     return {
         headers : {Authorization : `Bearer ${token}`}
     }
