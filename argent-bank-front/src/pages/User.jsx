@@ -3,11 +3,16 @@ import MainLayout from "../layouts/MainLayout";
 import {Redirect} from "react-router-dom";
 import {useLoginCheck} from "../utils/utils";
 import UserNameEditor from "../components/UserNameEditor";
+import {useEffect} from "react";
 
 //The UserAccount component uses placeholder data here
 
 function User() {
     const {loading, redirect, userData} = useLoginCheck()
+
+    useEffect(() => {
+        document.title = `Argent Bank - ${userData?.firstName} ${userData?.lastName} accounts`
+    }, [userData])
 
     if (loading) return <div>Loading data</div>
 

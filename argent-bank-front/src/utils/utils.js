@@ -18,11 +18,6 @@ export function useLoginCheck() {
     const status = useSelector(state => state.login.status)
 
     useEffect(() => {
-        if (status === 'resolved') {
-            setLoading(false)
-            return
-        }
-
         if (status === 'renaming') {
             const config = generateConfig()
             axios.put('http://localhost:3001/api/v1/user/profile',{
@@ -40,7 +35,7 @@ export function useLoginCheck() {
         }
 
         if (token) {
-            if (status === 'renamed' || status === 'renaming') return
+            if (status === 'renamed' || status === 'renaming' || status === 'resolved') return
             if (status !== 'connected') dispatch(connected())
         }else{
             setLoading(false)
@@ -61,7 +56,7 @@ export function useLoginCheck() {
         }
     }, [status])
 
-    const userData = useSelector(state => state.login.userData)
+    const userData = store.getState().login.userData
 
     //Useful only for pages that use userData
     return {redirect, loading, userData}
