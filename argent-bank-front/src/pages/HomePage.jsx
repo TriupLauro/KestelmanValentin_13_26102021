@@ -5,15 +5,22 @@ import moneyIcon from "../img/icon-money.png";
 import securityIcon from "../img/icon-security.png";
 import MainLayout from "../layouts/MainLayout";
 import {useEffect} from "react";
-import {useLoginCheck} from "../utils/utils";
+import {getTokenFromCookie} from "../utils/utils";
+import {useDispatch, useSelector} from "react-redux";
+import {retrieveUserData} from "../store/thunks";
 
 function HomePage() {
-    useEffect(() => {
-        document.title = 'Argent Bank - Home Page'
-    }, [])
+    const token = getTokenFromCookie()
+    const dispatch = useDispatch()
+    const userData = useSelector(state => state.login.userData)
 
-    //Called for checking the cookies and connecting/updating the nav bar if that's the case
-    useLoginCheck()
+    useEffect(() => {
+        if (!userData) {
+            if (token) dispatch(retrieveUserData)
+        }
+        document.title = 'Argent Bank - Home Page'
+    }, [token])
+
 
     return (
         <MainLayout>

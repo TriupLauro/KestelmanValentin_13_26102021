@@ -9,13 +9,12 @@ export const loginSlice = createSlice({
     },
     reducers: {
         logout : state => {
-            document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=lax`
+            document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
             state.status = 'disconnected'
             state.error = null
             state.userData = null
         },
         connecting : (state) => {
-            if (state.status === 'connecting') return
             state.status = 'connecting'
             state.error = null
         },

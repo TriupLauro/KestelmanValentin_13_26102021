@@ -1,7 +1,7 @@
 import {useState} from "react";
 import "../styles/nameEditor.css"
 import {useDispatch} from "react-redux";
-import {renaming} from "../store/loginSlice";
+import {updateUserName} from "../store/thunks";
 
 function UserNameEditor({firstName, lastName}) {
     const [editing, setEditing] = useState(false)
@@ -25,14 +25,15 @@ function UserNameEditor({firstName, lastName}) {
             return null
         }
 
-        dispatch(renaming({
-            firstName : firstNameEdited,
-            lastName : lastNameEdited
-        }))
-
-
         if (firstNameEdited !== '') setFirstNameDisplayed(firstNameEdited)
         if (lastNameEdited !== '') setLastNameDisplayed(lastNameEdited)
+
+
+        dispatch(updateUserName({
+            firstName : firstNameEdited ? firstNameEdited : firstNameDisplayed,
+            lastName : lastNameEdited?  lastNameEdited : lastNameDisplayed
+        }))
+
         setLastNameEdited('')
         setFirstNameEdited('')
         setEditing(false)

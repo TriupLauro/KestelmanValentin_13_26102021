@@ -1,17 +1,29 @@
 import MainLayout from "../layouts/MainLayout";
 import "../styles/transaction.css"
 import TransactionFrameRow from "../components/TransactionFrameRow";
-import {useLoginCheck} from "../utils/utils";
-import {Redirect} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {useEffect} from "react";
+import {getTokenFromCookie} from "../utils/utils";
+import {retrieveUserData} from "../store/thunks";
 
 //The data used here is only a placeholder and will contain the same data no matter the account clicked
 
 function TransactionsDetails() {
-    const {loading, redirect} = useLoginCheck()
+    const history = useHistory()
+    const dispatch = useDispatch()
+    const userData = useSelector(state => state.login.userData)
+    const token = getTokenFromCookie()
 
-    if (loading) return <div>Loading data</div>
-
-    if (redirect) return <Redirect to={redirect} />
+    useEffect(() => {
+        if (!userData) {
+            if (token){
+                dispatch(retrieveUserData)
+            }else{
+                history.push('/sign-in')
+            }
+        }
+    },[userData])
 
     return (
         <MainLayout>

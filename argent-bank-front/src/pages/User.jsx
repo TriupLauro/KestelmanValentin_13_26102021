@@ -1,22 +1,35 @@
 import UserAccount from "../components/UserAccount";
 import MainLayout from "../layouts/MainLayout";
-import {Redirect} from "react-router-dom";
-import {useLoginCheck} from "../utils/utils";
+import {useHistory} from "react-router-dom";
+import {getTokenFromCookie} from "../utils/utils";
 import UserNameEditor from "../components/UserNameEditor";
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {retrieveUserData} from "../store/thunks";
 
 //The UserAccount component uses placeholder data here
 
 function User() {
-    const {loading, redirect, userData} = useLoginCheck()
+    const [loading, setLoading] = useState(true)
+    const userData = useSelector(state => state.login.userData)
+    const dispatch = useDispatch()
+    const history = useHistory()
+    const token = getTokenFromCookie()
 
     useEffect(() => {
-        document.title = `Argent Bank - ${userData?.firstName} ${userData?.lastName} accounts`
+        if (!userData) {
+            if (token) {
+                dispatch(retrieveUserData)
+            }else{
+                history.push('/sign-in')
+            }
+        }else{
+            document.title = `Argent Bank - ${userData?.firstName} ${userData?.lastName} accounts`
+            setLoading(false)
+        }
     }, [userData])
 
     if (loading) return <div>Loading data</div>
-
-    if (redirect) return <Redirect to={redirect} />
 
     if (userData) {
         return (

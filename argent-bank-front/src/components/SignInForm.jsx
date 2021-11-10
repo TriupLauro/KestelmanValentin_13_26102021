@@ -1,32 +1,26 @@
-import {useState} from "react";
-import axios from "axios";
-import {useDispatch} from "react-redux";
-import * as loginActions from "../store/loginSlice"
-import {Redirect} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useDispatch, useSelector} from "react-redux";
+import {useHistory} from "react-router-dom";
+import {postCredentials} from "../store/thunks";
 
 function SignInForm() {
 
-    const [userName, setUserName] = useState('')
+    const [username, setUserName] = useState('')
     const [password, setPassword] = useState('')
     const [invalidLogins, setInvalidLogins] = useState(false)
-    const [redirect, setRedirect] = useState(null)
     const dispatch = useDispatch()
+
+    const status = useSelector(state => state.login.status)
+    const history = useHistory()
+
+    useEffect(() => {
+        if (status === 'rejected') setInvalidLogins(true)
+        if (status === 'connected') history.push('/user')
+    }, [status])
 
     function handleSubmit(e) {
         e.preventDefault()
-        dispatch(loginActions.connecting())
-        axios.post('http://localhost:3001/api/v1/user/login', {
-            email : userName,
-            password : password
-        }).then(response => {
-            setInvalidLogins(false)
-            document.cookie = `token=${response.data.body.token}; max-age=${60*60*24*7}; samesite=strict`
-            setRedirect('/user')
-        }).catch(error => {
-            if (error.response.status === 400) setInvalidLogins(true)
-            dispatch(loginActions.rejected(error.response.data))
-            throw error
-        })
+        dispatch(postCredentials({username,password}))
     }
 
     function typeUsername(e) {
@@ -37,13 +31,11 @@ function SignInForm() {
         setPassword(e.target.value)
     }
 
-    if (redirect) return <Redirect to={redirect} />
-
     return (
         <form onSubmit={handleSubmit}>
             <div className="input-wrapper">
                 <label htmlFor="username">Username</label>
-                <input type="text" id="username" value={userName} onChange={typeUsername}/>
+                <input type="text" id="username" value={username} onChange={typeUsername}/>
             </div>
             <div className="input-wrapper">
                 <label htmlFor="password">Password</label>
