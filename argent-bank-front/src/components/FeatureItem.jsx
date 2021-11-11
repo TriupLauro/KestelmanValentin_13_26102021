@@ -1,3 +1,5 @@
+import React from "react";
+
 function FeatureItem({iconImg, title, content}) {
     return (
         <div className="feature-item">

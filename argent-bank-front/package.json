@@ -31,6 +31,7 @@
     "jest-circus": "^27.3.1",
     "jest-scss-transform": "^1.0.1",
     "jest-watch-typeahead": "^1.0.0",
+    "msw": "^0.35.0",
     "vite": "^2.6.4"
   },
   "jest": {
@@ -67,7 +68,8 @@
       "node"
     ],
     "moduleNameMapper": {
-      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/jest/mocks/fileMocks.js"
     },
     "watchPlugins": [
       "jest-watch-typeahead/filename",
