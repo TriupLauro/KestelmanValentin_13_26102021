@@ -7,7 +7,15 @@ import React from "react";
 
 export function testingRender(ui, options) {
     const store = configureStore({
-        reducer : loginSlice.reducer
+        reducer : loginSlice.reducer,
+        //We need to specify the initial state here or it will be undefined for the tests
+        preloadedState : {
+            login : {
+                status : 'disconnected',
+                error : null,
+                userData : null
+            }
+        }
     })
 
     function Wrapper({children}) {

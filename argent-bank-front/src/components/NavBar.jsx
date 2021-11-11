@@ -20,7 +20,7 @@ function NavBar() {
                 <h1 className="sr-only">Argent Bank</h1>
             </Link>
             <div>
-                {store.getState().login?.userData ?
+                {store.getState().login.userData ?
                     <>
                         <Link className="main-nav-item" to="/user">
                             <i className="fa fa-user-circle"></i>

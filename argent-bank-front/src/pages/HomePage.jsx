@@ -13,7 +13,7 @@ import React from "react";
 function HomePage() {
     const token = getTokenFromCookie()
     const dispatch = useDispatch()
-    const userData = useSelector(state => state.login?.userData)
+    const userData = useSelector(state => state.login.userData)
 
     useEffect(() => {
         if (!userData) {
