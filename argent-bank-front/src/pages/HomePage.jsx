@@ -22,7 +22,6 @@ function HomePage() {
         document.title = 'Argent Bank - Home Page'
     }, [token])
 
-
     return (
         <MainLayout>
             <main>

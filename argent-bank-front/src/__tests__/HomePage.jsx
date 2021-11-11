@@ -6,6 +6,7 @@ import {screen} from "@testing-library/react";
 describe('Given I am on the home page', () => {
     test('The home page should render', () => {
         testingRender(<HomePage />)
-        expect(screen.getByText('Sign In')).toBeInTheDocument()
+        //expect(screen.getByText('Sign In')).toBeInTheDocument()
+        expect(screen.getByRole('link',{name : "Sign In"})).toBeInTheDocument()
     })
 })
