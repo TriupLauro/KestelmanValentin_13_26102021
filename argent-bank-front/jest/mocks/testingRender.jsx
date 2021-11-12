@@ -5,23 +5,31 @@ import {configureStore} from "@reduxjs/toolkit";
 import {Provider} from "react-redux";
 import React from "react";
 
-export function testingRender(ui, options) {
-    const store = configureStore({
-        reducer : loginSlice.reducer,
+const initialState = {
+    login : {
+        status : 'disconnected',
+        error : null,
+        userData : null
+    }
+}
+
+export const store = (customState = initialState) => {
+    return configureStore({
+        reducer: loginSlice.reducer,
         //We need to specify the initial state here or it will be undefined for the tests
-        preloadedState : {
-            login : {
-                status : 'disconnected',
-                error : null,
-                userData : null
-            }
+        preloadedState: {
+            ...customState
         }
     })
+}
 
+
+
+export function testingRender(ui, options, storeState) {
     function Wrapper({children}) {
         return (
             <MemoryRouter {...options}>
-                <Provider store={store}>
+                <Provider store={store(storeState)}>
                     {children}
                 </Provider>
             </MemoryRouter>
