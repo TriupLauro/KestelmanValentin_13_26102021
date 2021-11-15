@@ -1,4 +1,5 @@
-import {useState} from "react";
+import React,{useState} from "react";
+import PropTypes from "prop-types"
 
 // There is no modification to the database
 // The modification by text input and select only modify the display
@@ -83,7 +84,11 @@ function TransactionFrameRow ({notes, category, date, amount, description, balan
                                         <option onClick={() => handleSelect('Bills')}>Bills</option>
                                     </select>
                                     :
-                                    <i className="fa fa-pencil" onClick={toggleDisplayCategorySelect}> </i>
+                                    <i
+                                        className="fa fa-pencil"
+                                        onClick={toggleDisplayCategorySelect}
+                                        data-testid="category-pencil"
+                                    > </i>
                                 }
                             </div>
                             <div className="transaction-frame-dropdown-line">Notes: {
@@ -94,7 +99,11 @@ function TransactionFrameRow ({notes, category, date, amount, description, balan
                                            autoFocus
                                     />
                                     :
-                                    <span>{notesState} <i className="fa fa-pencil" onClick={toggleDisplayTextInput}> </i></span>
+                                    <span>{notesState} <i
+                                        className="fa fa-pencil"
+                                        onClick={toggleDisplayTextInput}
+                                        data-testid="note-pencil"
+                                    > </i></span>
                             }
                             </div>
                         </td>
@@ -103,6 +112,15 @@ function TransactionFrameRow ({notes, category, date, amount, description, balan
             }
         </>
     )
+}
+
+TransactionFrameRow.propTypes = {
+    notes : PropTypes.string.isRequired,
+    category : PropTypes.oneOf(['Food', 'Travel', 'Electronics', 'Clothes', 'Bills']).isRequired,
+    date : PropTypes.string.isRequired,
+    amount : PropTypes.number.isRequired,
+    description : PropTypes.string.isRequired,
+    balance : PropTypes.number.isRequired
 }
 
 export default TransactionFrameRow

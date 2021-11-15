@@ -30,6 +30,7 @@ export async function retrieveUserData(dispatch) {
         response = await axios.post('http://localhost:3001/api/v1/user/profile', {},config)
     }catch(error){
         dispatch(rejected(error.response.data.message))
+        document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
         return
     }
     dispatch(resolved(response.data.body))
