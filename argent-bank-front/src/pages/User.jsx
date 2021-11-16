@@ -6,6 +6,7 @@ import UserNameEditor from "../components/UserNameEditor";
 import {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {retrieveUserData} from "../store/thunks";
+import React from "react";
 
 //The UserAccount component uses placeholder data here
 

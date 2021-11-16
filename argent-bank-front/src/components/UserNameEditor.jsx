@@ -2,6 +2,8 @@ import {useState} from "react";
 import "../styles/nameEditor.css"
 import {useDispatch} from "react-redux";
 import {updateUserName} from "../store/thunks";
+import React from "react";
+import PropTypes from "prop-types";
 
 function UserNameEditor({firstName, lastName}) {
     const [editing, setEditing] = useState(false)
@@ -58,6 +60,11 @@ function UserNameEditor({firstName, lastName}) {
                     <button className="edit-button" onClick={() => setEditing(true)}>Edit Name</button>
                 </div>
     )
+}
+
+UserNameEditor.propTypes = {
+    firstName : PropTypes.string.isRequired,
+    lastName : PropTypes.string.isRequired
 }
 
 export default UserNameEditor

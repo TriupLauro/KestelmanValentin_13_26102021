@@ -1,5 +1,7 @@
 import {Redirect} from "react-router-dom";
 import {useState} from "react";
+import React from "react";
+import PropTypes from "prop-types";
 
 function UserAccount({title, amount}) {
 
@@ -22,6 +24,11 @@ function UserAccount({title, amount}) {
             </div>
         </section>
     )
+}
+
+UserAccount.propTypes = {
+    title : PropTypes.string.isRequired,
+    amount : PropTypes.number.isRequired
 }
 
 export default UserAccount

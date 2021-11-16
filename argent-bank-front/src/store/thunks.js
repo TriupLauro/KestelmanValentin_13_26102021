@@ -17,7 +17,7 @@ export function postCredentials({username, password}) {
             dispatch(rejected(error.response.data.message))
             return
         }
-        document.cookie = `token=${response.data.body.token}; max-age=${60*60*24*7}; samesite=strict`
+        document.cookie = `token=${response.data.body.token}; max-age=${60*60*24}; samesite=strict`
         dispatch(connected())
     }
 }
