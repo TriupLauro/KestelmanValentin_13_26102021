@@ -2,6 +2,7 @@ import {connected, connecting, rejected, renamed, renaming, resolved} from "./lo
 import axios from "axios";
 import {generateConfig} from "../utils/utils";
 import * as loginActions from "./loginSlice";
+import {BASE_URL} from "../constants";
 
 export function postCredentials({username, password}) {
     return async (dispatch) => {
@@ -9,7 +10,7 @@ export function postCredentials({username, password}) {
         let response
 
         try {
-            response = await axios.post('http://localhost:3001/api/v1/user/login', {
+            response = await axios.post(`${BASE_URL}/user/login`, {
                 email : username,
                 password : password
             })
@@ -27,7 +28,7 @@ export async function retrieveUserData(dispatch) {
     const config = generateConfig()
 
     try {
-        response = await axios.post('http://localhost:3001/api/v1/user/profile', {},config)
+        response = await axios.post(`${BASE_URL}/user/profile`, {},config)
     }catch(error){
         dispatch(rejected(error.response.data.message))
         document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
@@ -43,7 +44,7 @@ export function updateUserName({firstName, lastName}) {
         let response
 
         try {
-            response = await axios.put('http://localhost:3001/api/v1/user/profile',{
+            response = await axios.put(`${BASE_URL}/user/profile`,{
                 firstName : getState().login.userData.firstName,
                 lastName : getState().login.userData.lastName
             }, config)

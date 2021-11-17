@@ -1,5 +1,9 @@
 import React,{useState} from "react";
 import PropTypes from "prop-types"
+import {useMutation} from "react-query";
+import {BASE_URL} from "../constants";
+import {generateConfig} from "../utils/utils";
+import axios from "axios";
 
 // There is no modification to the database
 // The modification by text input and select only modify the display
@@ -10,8 +14,23 @@ function TransactionFrameRow ({notes, category, date, amount, description, balan
     const [collapse, setCollapse] = useState(true)
     const [displayCategorySelect, setDisplayCategorySelect] = useState(false)
     const [transactionCategory, setTransactionCategory] = useState(category)
-    const [ notesState, setNotesState ] = useState(notes)
+    const [notesState, setNotesState] = useState(notes)
     const [displayTextInput, setDisplayTextInput] = useState(false)
+
+    const transactionId = 'mockId'
+    const config = generateConfig()
+
+    const mutateCategory = useMutation(category => {
+        return axios.post(`${BASE_URL}/transactions/${transactionId}/category`,category,config)
+    })
+
+    const mutateNotes = useMutation(notes => {
+        return axios.post(`${BASE_URL}/transactions/${transactionId}/category`,notes,config)
+    })
+
+    const deleteNotes = useMutation(() => {
+        return axios.delete(`${BASE_URL}/transactions/${transactionId}/category`,config)
+    })
 
     function toggleCollapse () {
         setCollapse(!collapse)
@@ -21,8 +40,9 @@ function TransactionFrameRow ({notes, category, date, amount, description, balan
         setDisplayCategorySelect(!displayCategorySelect)
     }
 
-    function handleSelect(value) {
+    async function handleSelect(value) {
         setTransactionCategory(value)
+        await mutateCategory.mutate(value)
         toggleDisplayCategorySelect()
     }
 
@@ -33,13 +53,27 @@ function TransactionFrameRow ({notes, category, date, amount, description, balan
     function handleTextInputKeyDown(e) {
         if (e.code === 'Enter') {
             setNotesState(e.target.value)
+            handleNotesUpdate(e.target.value)
             toggleDisplayTextInput()
         }
     }
 
     function handleTextBlur(e) {
         setNotesState(e.target.value)
+        handleNotesUpdate(e.target.value)
         toggleDisplayTextInput()
+    }
+
+    function handleNotesUpdate(notes) {
+        if (notes === '') {
+            deleteNotes.mutate()
+            return
+        }
+        mutateNotes.mutate(notes)
+    }
+
+    if (mutateCategory.isError || mutateNotes.isError || deleteNotes.isError) {
+        console.log('Back end not ready yet')
     }
 
     return (

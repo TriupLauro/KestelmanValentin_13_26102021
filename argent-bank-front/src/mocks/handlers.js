@@ -31,7 +31,7 @@ export const handlers = [
                     body : {
                         firstName : 'testFirstName',
                         lastName : 'testLastName',
-                        email : 'test@mail.com',
+                        email : 'test@name.com',
                         id : 'TEST_ID'
                     }
                 })

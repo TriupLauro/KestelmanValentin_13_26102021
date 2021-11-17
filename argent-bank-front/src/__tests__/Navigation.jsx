@@ -20,6 +20,7 @@ describe('Testing the router', () => {
         })
         test('After going to the Sign in form, credentials can be sent and user data would be displayed', async () => {
             render(<App />)
+            //In the intercepted API call, the only valid logins are 'test@name.com' with 'testpassword'
             userEvent.click(screen.getByRole('link', {name : "Sign In"}))
             userEvent.type(screen.getByLabelText('Username'),'test@name.com')
             userEvent.type(screen.getByLabelText('Password'),'testpassword')
@@ -39,6 +40,8 @@ describe('Testing the router', () => {
 
             const errorDisplay = await screen.findByText('Could not login with those credentials')
             screen.debug(errorDisplay)
+            expect(screen.getByLabelText('Username')).toBeInTheDocument()
+            expect(screen.getByLabelText('Password')).toBeInTheDocument()
         })
     })
 })
