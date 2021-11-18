@@ -25,11 +25,11 @@ function TransactionFrameRow ({notes, category, date, amount, description, balan
     })
 
     const mutateNotes = useMutation(notes => {
-        return axios.post(`${BASE_URL}/transactions/${transactionId}/category`,notes,config)
+        return axios.post(`${BASE_URL}/transactions/${transactionId}/notes`,notes,config)
     })
 
     const deleteNotes = useMutation(() => {
-        return axios.delete(`${BASE_URL}/transactions/${transactionId}/category`,config)
+        return axios.delete(`${BASE_URL}/transactions/${transactionId}/notes`,config)
     })
 
     function toggleCollapse () {
