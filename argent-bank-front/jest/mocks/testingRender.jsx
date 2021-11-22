@@ -4,6 +4,7 @@ import {loginSlice} from "../../src/store/loginSlice";
 import {configureStore} from "@reduxjs/toolkit";
 import {Provider} from "react-redux";
 import React from "react";
+import {QueryClient, QueryClientProvider} from "react-query";
 
 const initialState = {
     login : {
@@ -23,18 +24,24 @@ export const store = (customState = initialState) => {
     })
 }
 
+const queryClient = new QueryClient()
 
+const rootBody = document.querySelector('body')
+const defaultContainer = document.createElement('div')
+rootBody.appendChild(defaultContainer)
 
-export function testingRender(ui, options, storeState) {
+export function testingRender(ui, {options , container } = {options : null, container : defaultContainer}, storeState) {
     function Wrapper({children}) {
         return (
             <MemoryRouter {...options}>
-                <Provider store={store(storeState)}>
-                    {children}
-                </Provider>
+                <QueryClientProvider client={queryClient}>
+                    <Provider store={store(storeState)}>
+                        {children}
+                    </Provider>
+                </QueryClientProvider>
             </MemoryRouter>
         )
     }
 
-    rtlRender(ui, {wrapper : Wrapper})
+    rtlRender(ui, {wrapper : Wrapper, container : container})
 }

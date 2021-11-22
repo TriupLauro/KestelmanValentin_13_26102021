@@ -29,7 +29,8 @@ describe('Testing the router', () => {
             const displayedName = await screen.findByText('testFirstName')
             screen.debug(displayedName)
             expect(screen.getByRole('heading', {name : 'Welcome back testFirstName testLastName!'})).toBeInTheDocument()
-            document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
+            userEvent.click(screen.getByRole('link', {name : 'Sign Out'}))
+            //document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
         })
         test('If incorrect credentials are sent, an error message appears', async () => {
             render(<App />)

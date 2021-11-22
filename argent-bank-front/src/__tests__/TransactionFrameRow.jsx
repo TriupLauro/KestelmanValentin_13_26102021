@@ -1,14 +1,15 @@
 import React from "react";
 import TransactionFrameRow from "../components/TransactionFrameRow";
-import {render, screen} from "@testing-library/react";
+import {screen} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import {testingRender} from "../../jest/mocks/testingRender";
 
 describe('Testing TransactionFrameRow', () => {
     test('The row should display information from the props', () => {
         const rootBody = document.getElementsByTagName('body')[0]
         const tabcontainer = document.createElement('tbody')
         rootBody.appendChild(tabcontainer)
-        render(<TransactionFrameRow
+        testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
             description="Engie"
@@ -23,7 +24,7 @@ describe('Testing TransactionFrameRow', () => {
         const rootBody = document.getElementsByTagName('body')[0]
         const tabcontainer = document.createElement('tbody')
         rootBody.appendChild(tabcontainer)
-        render(<TransactionFrameRow
+        testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
             description="Engie"
@@ -38,7 +39,7 @@ describe('Testing TransactionFrameRow', () => {
         const rootBody = document.getElementsByTagName('body')[0]
         const tabcontainer = document.createElement('tbody')
         rootBody.appendChild(tabcontainer)
-        render(<TransactionFrameRow
+        testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
             description="Engie"
@@ -56,7 +57,7 @@ describe('Testing TransactionFrameRow', () => {
         const rootBody = document.getElementsByTagName('body')[0]
         const tabcontainer = document.createElement('tbody')
         rootBody.appendChild(tabcontainer)
-        render(<TransactionFrameRow
+        testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
             description="Engie"
@@ -77,7 +78,7 @@ describe('Testing TransactionFrameRow', () => {
         const rootBody = document.getElementsByTagName('body')[0]
         const tabcontainer = document.createElement('tbody')
         rootBody.appendChild(tabcontainer)
-        render(<TransactionFrameRow
+        testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
             description="Engie"
@@ -95,7 +96,7 @@ describe('Testing TransactionFrameRow', () => {
         const rootBody = document.getElementsByTagName('body')[0]
         const tabcontainer = document.createElement('tbody')
         rootBody.appendChild(tabcontainer)
-        render(<TransactionFrameRow
+        testingRender(<TransactionFrameRow
             notes="Pre-existent note"
             category="Bills"
             description="Engie"
@@ -110,7 +111,7 @@ describe('Testing TransactionFrameRow', () => {
         const rootBody = document.getElementsByTagName('body')[0]
         const tabcontainer = document.createElement('tbody')
         rootBody.appendChild(tabcontainer)
-        render(<TransactionFrameRow
+        testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
             description="Engie"
@@ -127,7 +128,7 @@ describe('Testing TransactionFrameRow', () => {
         const rootBody = document.getElementsByTagName('body')[0]
         const tabcontainer = document.createElement('tbody')
         rootBody.appendChild(tabcontainer)
-        render(<TransactionFrameRow
+        testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
             description="Engie"
@@ -143,7 +144,7 @@ describe('Testing TransactionFrameRow', () => {
         const rootBody = document.getElementsByTagName('body')[0]
         const tabcontainer = document.createElement('tbody')
         rootBody.appendChild(tabcontainer)
-        render(<TransactionFrameRow
+        testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
             description="Engie"
