@@ -44,5 +44,106 @@ export const handlers = [
                 message : 'Test error message : invalid token'
             })
         )
+    }),
+    rest.post(`${BASE_URL}/transactions/mockId/category`, (req,res,ctx) => {
+        try{
+            const mockedToken = req.headers.get('authorization').split('Bearer')[1].trim()
+            const updatedCategory = req.body
+
+            if (mockedToken !== 'SECRET_TOKEN') {
+                console.log('Test error message : invalid token')
+                return res(
+                    ctx.status(403),
+                    ctx.json({
+                        message : 'Test error message : invalid token'
+                    })
+                )
+            }
+
+            console.log(`Updated category with ${updatedCategory}`)
+
+            return res(
+                ctx.json({
+                    body : {
+                        message : `Updated category with ${updatedCategory}`
+                    }
+                })
+            )
+        }catch(e) {
+            console.log('Test error message : invalid token')
+            return res(
+                ctx.status(403),
+                ctx.json({
+                    message : 'Test error message : invalid token'
+                })
+            )
+        }
+    }),
+    rest.post(`${BASE_URL}/transactions/mockId/notes`, (req,res,ctx) => {
+        try{
+            const mockedToken = req.headers.get('authorization').split('Bearer')[1].trim()
+            const updatedNotes = req.body
+
+            if (mockedToken !== 'SECRET_TOKEN') {
+                console.log('Test error message : invalid token')
+                return res(
+                    ctx.status(403),
+                    ctx.json({
+                        message : 'Test error message : invalid token'
+                    })
+                )
+            }
+
+            console.log(`Updated notes with ${updatedNotes}`)
+
+            return res(
+                ctx.json({
+                    body : {
+                        message : `Updated category notes ${updatedNotes}`
+                    }
+                })
+            )
+        }catch(e) {
+            console.log('Test error message : invalid token')
+            return res(
+                ctx.status(403),
+                ctx.json({
+                    message : 'Test error message : invalid token'
+                })
+            )
+        }
+    }),
+    rest.delete(`${BASE_URL}/transactions/mockId/notes`,(req,res,ctx) => {
+        try{
+            const mockedToken = req.headers.get('authorization').split('Bearer')[1].trim()
+
+            if (mockedToken !== 'SECRET_TOKEN') {
+                console.log('Test error message : invalid token')
+                return res(
+                    ctx.status(403),
+                    ctx.json({
+                        message : 'Test error message : invalid token'
+                    })
+                )
+            }
+
+            console.log(`Deleted notes`)
+
+            return res(
+                ctx.json({
+                    body : {
+                        message : `Deleted notes`
+                    }
+                })
+            )
+        }catch(e) {
+            console.log('Test error message : invalid token')
+            return res(
+                ctx.status(403),
+                ctx.json({
+                    message : 'Test error message : invalid token'
+                })
+            )
+        }
     })
 ]

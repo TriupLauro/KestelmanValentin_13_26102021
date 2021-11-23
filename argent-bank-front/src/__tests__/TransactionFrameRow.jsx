@@ -1,13 +1,22 @@
 import React from "react";
 import TransactionFrameRow from "../components/TransactionFrameRow";
-import {screen} from "@testing-library/react";
+import {screen, waitFor} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {testingRender} from "../../jest/mocks/testingRender";
+import axios from "axios";
+import {BASE_URL} from "../constants";
+
+const rootBody = document.getElementsByTagName('body')[0]
+const tabcontainer = document.createElement('tbody')
+
+beforeEach(() => {
+    rootBody.innerHTML = ""
+    tabcontainer.innerHTML = ""
+    rootBody.appendChild(tabcontainer)
+})
 
 describe('Testing TransactionFrameRow', () => {
     test('The row should display information from the props', () => {
-        const rootBody = document.getElementsByTagName('body')[0]
-        const tabcontainer = document.createElement('tbody')
         rootBody.appendChild(tabcontainer)
         testingRender(<TransactionFrameRow
             notes=""
@@ -21,9 +30,6 @@ describe('Testing TransactionFrameRow', () => {
         expect(screen.getByText('Engie')).toBeInTheDocument()
     })
     test('Money amount should be formatted', () => {
-        const rootBody = document.getElementsByTagName('body')[0]
-        const tabcontainer = document.createElement('tbody')
-        rootBody.appendChild(tabcontainer)
         testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
@@ -36,9 +42,6 @@ describe('Testing TransactionFrameRow', () => {
         expect(screen.getByText('$11,548.26')).toBeInTheDocument()
     })
     test('Transaction details should appear after clicking', () => {
-        const rootBody = document.getElementsByTagName('body')[0]
-        const tabcontainer = document.createElement('tbody')
-        rootBody.appendChild(tabcontainer)
         testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
@@ -54,9 +57,6 @@ describe('Testing TransactionFrameRow', () => {
         expect(screen.getByText('Category: Bills')).toBeInTheDocument()
     })
     test('Transaction details should disappear after clicking a second time', () => {
-        const rootBody = document.getElementsByTagName('body')[0]
-        const tabcontainer = document.createElement('tbody')
-        rootBody.appendChild(tabcontainer)
         testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
@@ -75,9 +75,6 @@ describe('Testing TransactionFrameRow', () => {
         expect(screen.queryByText('Category: Bills')).not.toBeInTheDocument()
     })
     test('Clicking the note pencil should open a text input',() => {
-        const rootBody = document.getElementsByTagName('body')[0]
-        const tabcontainer = document.createElement('tbody')
-        rootBody.appendChild(tabcontainer)
         testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
@@ -93,9 +90,6 @@ describe('Testing TransactionFrameRow', () => {
         expect(textInput.value).toBe("")
     })
     test("If there's already a note, then it should be displayed",() => {
-        const rootBody = document.getElementsByTagName('body')[0]
-        const tabcontainer = document.createElement('tbody')
-        rootBody.appendChild(tabcontainer)
         testingRender(<TransactionFrameRow
             notes="Pre-existent note"
             category="Bills"
@@ -108,9 +102,6 @@ describe('Testing TransactionFrameRow', () => {
         expect(screen.getByText("Pre-existent note")).toBeInTheDocument()
     })
     test("The user should be able to type in a note", () => {
-        const rootBody = document.getElementsByTagName('body')[0]
-        const tabcontainer = document.createElement('tbody')
-        rootBody.appendChild(tabcontainer)
         testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
@@ -119,15 +110,14 @@ describe('Testing TransactionFrameRow', () => {
             amount={139.56}
             balance={11548.26}
         />,{container : tabcontainer})
+        document.cookie = `token=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
         userEvent.click(screen.getByRole('row'))
         userEvent.click(screen.getByTestId('note-pencil'))
         userEvent.type(screen.getByRole('textbox'),'Automated typing of a note {enter}')
         expect(screen.getByText('Automated typing of a note')).toBeInTheDocument()
+        document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
     })
     test('Clicking the category pencil should display a select dropdown', () => {
-        const rootBody = document.getElementsByTagName('body')[0]
-        const tabcontainer = document.createElement('tbody')
-        rootBody.appendChild(tabcontainer)
         testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
@@ -140,10 +130,7 @@ describe('Testing TransactionFrameRow', () => {
         userEvent.click(screen.getByTestId('category-pencil'))
         expect(screen.getByRole('combobox')).toBeInTheDocument()
     })
-    test('Selecting a dropdown option should modify the category', () => {
-        const rootBody = document.getElementsByTagName('body')[0]
-        const tabcontainer = document.createElement('tbody')
-        rootBody.appendChild(tabcontainer)
+    test('Selecting a dropdown option should modify the category', async () => {
         testingRender(<TransactionFrameRow
             notes=""
             category="Bills"
@@ -152,9 +139,126 @@ describe('Testing TransactionFrameRow', () => {
             amount={139.56}
             balance={11548.26}
         />,{container : tabcontainer})
+        document.cookie = `token=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
         userEvent.click(screen.getByRole('row'))
         userEvent.click(screen.getByTestId('category-pencil'))
         userEvent.click(screen.getByRole('option', {name : 'Electronics'}))
-        expect(screen.getByText('Category: Electronics')).toBeInTheDocument()
+        await waitFor(() => expect(screen.getByText('Category: Electronics')).toBeInTheDocument())
+        document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
+    })
+    describe('Testing the fake API Calls', () => {
+        test('Call to modify the category', async () => {
+            testingRender(<TransactionFrameRow
+                notes=""
+                category="Bills"
+                description="Engie"
+                date="September 5th, 2021"
+                amount={139.56}
+                balance={11548.26}
+            />, {container : tabcontainer})
+            document.cookie = `token=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
+
+            const axiosPostMethod = jest.spyOn(axios,'post')
+            expect(axiosPostMethod).not.toHaveBeenCalled()
+
+            userEvent.click(screen.getByRole('row'))
+            userEvent.click(screen.getByTestId('category-pencil'))
+            userEvent.click(screen.getByRole('option', {name : 'Electronics'}))
+
+            await waitFor(() => {
+                expect(axiosPostMethod).toHaveBeenCalled()
+            })
+            expect(axiosPostMethod).toHaveBeenCalledWith(
+                `${BASE_URL}/transactions/mockId/category`,
+                'Electronics',
+                {"headers": {"Authorization": "Bearer SECRET_TOKEN"}}
+                )
+
+            document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
+        })
+        /*test('Fail to update category without token', async () => {
+        This situation could not happen in a actual usage of the app
+        Instead, the user would be redirected to the sign in form
+            testingRender(<TransactionFrameRow
+                notes=""
+                category="Bills"
+                description="Engie"
+                date="September 5th, 2021"
+                amount={139.56}
+                balance={11548.26}
+            />, {container : tabcontainer})
+
+            document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
+
+            const axiosPostMethod = jest.spyOn(axios,'post')
+            expect(axiosPostMethod).not.toHaveBeenCalled()
+
+            userEvent.click(screen.getByRole('row'))
+            userEvent.click(screen.getByTestId('category-pencil'))
+            userEvent.click(screen.getByRole('option', {name : 'Electronics'}))
+
+            await waitFor(() => {
+                expect(axiosPostMethod).toHaveBeenCalled()
+            })
+
+            expect(axiosPostMethod).toHaveBeenCalledWith(
+                `${BASE_URL}/transactions/mockId/category`,
+                'Electronics',
+                null
+            )
+
+        })*/
+        test('Call to modify the notes', async () => {
+            testingRender(<TransactionFrameRow
+                notes=""
+                category="Bills"
+                description="Engie"
+                date="September 5th, 2021"
+                amount={139.56}
+                balance={11548.26}
+            />, {container : tabcontainer})
+            document.cookie = `token=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
+
+            const axiosPostMethod = jest.spyOn(axios,'post')
+
+            userEvent.click(screen.getByRole('row'))
+            userEvent.click(screen.getByTestId('note-pencil'))
+            userEvent.type(screen.getByRole('textbox'),'Automated typing of a note {enter}')
+
+            await waitFor(() => expect(axiosPostMethod).toHaveBeenCalled())
+
+            expect(axiosPostMethod).toHaveBeenCalledWith(
+                `${BASE_URL}/transactions/mockId/notes`,
+                'Automated typing of a note ',
+                {"headers": {"Authorization": "Bearer SECRET_TOKEN"}}
+            )
+
+            document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
+        })
+        test('Call to delete existing notes', async () => {
+            testingRender(<TransactionFrameRow
+                notes="Note to be deleted"
+                category="Bills"
+                description="Engie"
+                date="September 5th, 2021"
+                amount={139.56}
+                balance={11548.26}
+            />, {container : tabcontainer})
+            document.cookie = `token=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
+
+            const axiosDel = jest.spyOn(axios,'delete')
+            userEvent.click(screen.getByRole('row'))
+            userEvent.click(screen.getByTestId('note-pencil'))
+
+            userEvent.type(screen.getByRole('textbox'),'{selectall}{backspace}{enter}')
+
+            await waitFor(() => expect(axiosDel).toHaveBeenCalled())
+            expect(axiosDel).toHaveBeenCalledWith(
+                `${BASE_URL}/transactions/mockId/notes`,
+                {"headers": {"Authorization": "Bearer SECRET_TOKEN"}}
+            )
+
+            document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
+        })
     })
 })
