@@ -1,6 +1,6 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-interface userData {
+export interface userDataType {
     email? : string
     firstName? : string
     lastName? : string
@@ -12,7 +12,7 @@ interface userData {
 interface loginState {
     status : string
     error : string | null
-    userData : userData | null
+    userData : userDataType | null
 }
 
 export interface userName {
@@ -36,7 +36,7 @@ export const loginSlice = createSlice({
         authentified : state => {
             state.status = 'authentified'
         },
-        retrieved : (state, action : PayloadAction<userData>) => {
+        retrieved : (state, action : PayloadAction<userDataType>) => {
             state.status = 'retrieved'
             state.userData = action.payload
             state.error = null

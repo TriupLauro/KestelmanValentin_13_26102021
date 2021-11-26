@@ -1,5 +1,7 @@
 import {ChangeEvent, useState} from "react";
 import "../styles/userNameEditor.css"
+import {useAppDispatch} from "../store/storeHooks";
+import {updateUserName} from "../store/thunks";
 
 function UserNameEditor({firstName, lastName} : {firstName : string, lastName : string}) {
     const [editing, setEditing] = useState(false)
@@ -7,7 +9,7 @@ function UserNameEditor({firstName, lastName} : {firstName : string, lastName : 
     const [lastNameEdited, setLastNameEdited] = useState('')
     const [firstNameDisplayed, setFirstNameDisplayed] = useState(firstName)
     const [lastNameDisplayed, setLastNameDisplayed] = useState(lastName)
-    //const dispatch = useAppDispatch()
+    const dispatch = useAppDispatch()
 
     function typeFirstName(e : ChangeEvent<HTMLInputElement>) {
         setFirstNameEdited(e.target.value)
@@ -27,10 +29,10 @@ function UserNameEditor({firstName, lastName} : {firstName : string, lastName : 
         if (lastNameEdited !== '') setLastNameDisplayed(lastNameEdited)
 
 
-        /*dispatch(updateUserName({
+        dispatch(updateUserName({
             firstName : firstNameEdited ? firstNameEdited : firstNameDisplayed,
             lastName : lastNameEdited?  lastNameEdited : lastNameDisplayed
-        }))*/
+        }))
 
         setLastNameEdited('')
         setFirstNameEdited('')
