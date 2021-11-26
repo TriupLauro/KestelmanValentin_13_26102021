@@ -1,11 +1,16 @@
 import axios from "axios";
 import {BASE_URL} from "../constants/constants";
 import {AnyAction, ThunkAction} from "@reduxjs/toolkit";
-import {RootState} from "./store";
-import {authentified, rejected} from "./loginSlice";
+import {AppDispatch, RootState} from "./store";
+import {authentified, connecting, rejected, renamed, renaming, retrieved, userName} from "./loginSlice";
+import {generateConfig} from "../utils/utils";
 
-export function authentification({userName, password} : {userName : string, password : string}) : ThunkAction<void, RootState, unknown, AnyAction> {
+export type AppThunk<ReturnType = void> = ThunkAction<ReturnType, RootState, unknown, AnyAction>
+
+export function authentification({userName, password} : {userName : string, password : string}) : AppThunk {
     return async (dispatch) => {
+        dispatch(connecting())
+
         let response
 
         try {
@@ -23,3 +28,37 @@ export function authentification({userName, password} : {userName : string, pass
         document.cookie = `token=${response.data.body.token}; samesite=strict; max-age=${60*60*24}`
     }
 }
+
+export async function retrieveUserData(dispatch : AppDispatch) : Promise<void>{
+    let response
+    const config = generateConfig()
+
+    try {
+        response = await axios.post(`${BASE_URL}/user/profile`, {},config)
+    }catch(error : any){
+        dispatch(rejected(error.response.data.message))
+        return
+    }
+    dispatch(retrieved(response.data.body))
+}
+
+/*export function updateUserName({firstName, lastName} : userName) : AppThunk {
+    return async (dispatch,getState) => {
+        dispatch(renaming({firstName, lastName}))
+        const config = generateConfig()
+        let response
+
+        try {
+            response = await axios.put('http://localhost:3001/api/v1/user/profile',{
+                firstName : getState().login.userData.firstName,
+                lastName : getState().login.userData.lastName
+            }, config)
+        }catch(error : any){
+            dispatch(rejected(error.response.data.message))
+            return
+        }
+        console.log(response.data.message)
+        dispatch(renamed())
+    }
+}*/
+

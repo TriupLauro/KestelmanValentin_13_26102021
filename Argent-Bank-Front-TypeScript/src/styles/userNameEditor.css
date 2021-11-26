@@ -1,0 +1,28 @@
+h1.editing {
+    margin-bottom : 0;
+}
+
+.name-input-container input {
+    height: 2.5rem;
+    width: 15rem;
+    font-size: 1.5rem;
+    padding-left: 1rem;
+    box-sizing: border-box;
+}
+
+.name-input-container input:first-child {
+    margin-right: 1rem;
+}
+
+.name-button-container {
+    margin-top: 0.75rem;
+}
+
+.name-button-container button {
+    width: 5rem;
+    margin-bottom: 0.45rem;
+}
+
+.name-button-container button:first-child {
+    margin-right: 1rem;
+}
