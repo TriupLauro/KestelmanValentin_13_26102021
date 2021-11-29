@@ -43,19 +43,15 @@ export async function retrieveUserData(dispatch : AppDispatch) : Promise<void>{
 }
 
 export function updateUserName({firstName, lastName} : userName) : AppThunk {
-    return async (dispatch,getState) => {
-        if (getState().login.userData === null) {
-            dispatch(rejected('No entered name'))
-        }
-
+    return async (dispatch) => {
         dispatch(renaming({firstName, lastName}))
         const config = generateConfig()
         let response
 
         try {
             response = await axios.put('http://localhost:3001/api/v1/user/profile',{
-                firstName : getState().login.userData!.firstName,
-                lastName : getState().login.userData!.lastName
+                firstName,
+                lastName
             }, config)
         }catch(error : any){
             dispatch(rejected(error.response.data.message))
