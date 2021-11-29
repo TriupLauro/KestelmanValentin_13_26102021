@@ -145,5 +145,26 @@ export const handlers = [
                 })
             )
         }
+    }),
+    rest.put(`${BASE_URL}/user/profile`, (req,res,ctx) => {
+        const mockedToken = req.headers.get('authorization').split('Bearer')[1].trim()
+        const {firstName, lastName} = req.body
+
+        if (mockedToken !== 'SECRET_TOKEN') {
+            console.log('Test error message : invalid token')
+            return res(
+                ctx.status(403),
+                ctx.json({
+                    message : 'Test error message : invalid token'
+                })
+            )
+        }
+
+        return res(
+            ctx.json({
+                message : `User renamed to ${firstName} ${lastName}`
+            })
+        )
+
     })
 ]
