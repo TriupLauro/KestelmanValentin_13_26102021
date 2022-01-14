@@ -110,12 +110,12 @@ describe('Testing TransactionFrameRow', () => {
             amount={139.56}
             balance={11548.26}
         />,{container : tabcontainer})
-        document.cookie = `token=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
+        document.cookie = `abtoken=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
         userEvent.click(screen.getByRole('row'))
         userEvent.click(screen.getByTestId('note-pencil'))
         userEvent.type(screen.getByRole('textbox'),'Automated typing of a note {enter}')
         expect(screen.getByText('Automated typing of a note')).toBeInTheDocument()
-        document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
+        document.cookie = `abtoken=; expires=Thu, 01 Jan 1970; samesite=strict`
     })
     test('Clicking the category pencil should display a select dropdown', () => {
         testingRender(<TransactionFrameRow
@@ -139,12 +139,12 @@ describe('Testing TransactionFrameRow', () => {
             amount={139.56}
             balance={11548.26}
         />,{container : tabcontainer})
-        document.cookie = `token=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
+        document.cookie = `abtoken=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
         userEvent.click(screen.getByRole('row'))
         userEvent.click(screen.getByTestId('category-pencil'))
         userEvent.click(screen.getByRole('option', {name : 'Electronics'}))
         await waitFor(() => expect(screen.getByText('Category: Electronics')).toBeInTheDocument())
-        document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
+        document.cookie = `abtoken=; expires=Thu, 01 Jan 1970; samesite=strict`
     })
     describe('Testing the fake API Calls', () => {
         test('Call to modify the category', async () => {
@@ -156,7 +156,7 @@ describe('Testing TransactionFrameRow', () => {
                 amount={139.56}
                 balance={11548.26}
             />, {container : tabcontainer})
-            document.cookie = `token=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
+            document.cookie = `abtoken=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
 
             const axiosPostMethod = jest.spyOn(axios,'post')
             expect(axiosPostMethod).not.toHaveBeenCalled()
@@ -174,7 +174,7 @@ describe('Testing TransactionFrameRow', () => {
                 {"headers": {"Authorization": "Bearer SECRET_TOKEN"}}
                 )
 
-            document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
+            document.cookie = `abtoken=; expires=Thu, 01 Jan 1970; samesite=strict`
         })
         /*test('Fail to update category without token', async () => {
         This situation could not happen in a actual usage of the app
@@ -217,7 +217,7 @@ describe('Testing TransactionFrameRow', () => {
                 amount={139.56}
                 balance={11548.26}
             />, {container : tabcontainer})
-            document.cookie = `token=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
+            document.cookie = `abtoken=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
 
             const axiosPostMethod = jest.spyOn(axios,'post')
 
@@ -233,7 +233,7 @@ describe('Testing TransactionFrameRow', () => {
                 {"headers": {"Authorization": "Bearer SECRET_TOKEN"}}
             )
 
-            document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
+            document.cookie = `abtoken=; expires=Thu, 01 Jan 1970; samesite=strict`
         })
         test('Call to delete existing notes', async () => {
             testingRender(<TransactionFrameRow
@@ -244,7 +244,7 @@ describe('Testing TransactionFrameRow', () => {
                 amount={139.56}
                 balance={11548.26}
             />, {container : tabcontainer})
-            document.cookie = `token=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
+            document.cookie = `abtoken=SECRET_TOKEN; max-age=${60*60*24}; samesite=strict`
 
             const axiosDel = jest.spyOn(axios,'delete')
             userEvent.click(screen.getByRole('row'))
@@ -258,7 +258,7 @@ describe('Testing TransactionFrameRow', () => {
                 {"headers": {"Authorization": "Bearer SECRET_TOKEN"}}
             )
 
-            document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
+            document.cookie = `abtoken=; expires=Thu, 01 Jan 1970; samesite=strict`
         })
     })
 })
