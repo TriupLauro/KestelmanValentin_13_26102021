@@ -9,7 +9,7 @@ export const loginSlice = createSlice({
     },
     reducers: {
         logout : state => {
-            document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
+            document.cookie = `abtoken=; expires=Thu, 01 Jan 1970; samesite=strict`
             state.status = 'disconnected'
             state.error = null
             state.userData = null

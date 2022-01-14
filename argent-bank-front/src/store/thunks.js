@@ -18,7 +18,7 @@ export function postCredentials({username, password}) {
             dispatch(rejected(error.response.data.message))
             return
         }
-        document.cookie = `token=${response.data.body.token}; max-age=${60*60*24}; samesite=strict`
+        document.cookie = `abtoken=${response.data.body.token}; max-age=${60*60*24}; samesite=strict`
         dispatch(connected())
     }
 }
@@ -31,7 +31,7 @@ export async function retrieveUserData(dispatch) {
         response = await axios.post(`${BASE_URL}/user/profile`, {},config)
     }catch(error){
         dispatch(rejected(error.response.data.message))
-        document.cookie = `token=; expires=Thu, 01 Jan 1970; samesite=strict`
+        document.cookie = `abtoken=; expires=Thu, 01 Jan 1970; samesite=strict`
         return
     }
     dispatch(resolved(response.data.body))
